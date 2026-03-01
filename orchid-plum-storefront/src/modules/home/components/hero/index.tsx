@@ -17,7 +17,7 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
       {products.map((product) => {
         const { cheapestPrice } = getProductPrice({ product })
         const images = product.images || []
-        const thumbnail = product.thumbnail
+        const thumbnail = product.thumbnail || images[0]?.url || null
         const secondImage = images.length > 1 ? images[1].url : null
 
         return (
