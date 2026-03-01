@@ -26,24 +26,38 @@ export default async function Home(props: {
     fields: "id,handle,title",
   })
 
-  if (!collections?.length) {
-    return null
-  }
+  let allProducts
 
-  // Fetch products from all collections for the showcase
-  const productPromises = collections.map((collection) =>
-    listProducts({
+  if (collections?.length) {
+    // Fetch products from all collections for the showcase
+    const productPromises = collections.map((collection) =>
+      listProducts({
+        regionId: region.id,
+        queryParams: {
+          collection_id: collection.id,
+          fields: "*variants.calculated_price,+images",
+          limit: 4,
+        },
+      })
+    )
+
+    const results = await Promise.all(productPromises)
+    allProducts = results.flatMap((r) => r.response.products)
+  } else {
+    // No collections — fetch all products directly
+    const { response } = await listProducts({
       regionId: region.id,
       queryParams: {
-        collection_id: collection.id,
         fields: "*variants.calculated_price,+images",
-        limit: 4,
+        limit: 12,
       },
     })
-  )
+    allProducts = response.products
+  }
 
-  const results = await Promise.all(productPromises)
-  const allProducts = results.flatMap((r) => r.response.products)
+  if (!allProducts?.length) {
+    return null
+  }
 
   return <ProductShowcase products={allProducts} />
 }
