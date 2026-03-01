@@ -10,9 +10,9 @@ export default async function Nav() {
   })
 
   return (
-    <div className="absolute top-0 inset-x-0 z-50">
+    <div className="sticky top-0 inset-x-0 z-50 bg-white">
       <header className="relative h-20 mx-auto">
-        <nav className="flex items-center justify-between w-full h-full px-8 text-white">
+        <nav className="flex items-center justify-between w-full h-full px-8 text-neutral-900">
           {/* Left: Logo + Brand Name */}
           <div className="flex items-center gap-3 flex-1 basis-0">
             <LocalizedClientLink

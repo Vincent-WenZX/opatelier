@@ -26,7 +26,7 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
             href={`/products/${product.handle}`}
             className="block"
           >
-            <section className="relative h-screen w-full">
+            <section className="relative h-[calc(100vh-5rem)] w-full">
               {/* 50/50 Image Grid */}
               <div className="flex h-[calc(100%-4rem)] small:flex-row flex-col">
                 {/* Left Image */}
