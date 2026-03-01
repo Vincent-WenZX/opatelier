@@ -1,0 +1,82 @@
+diff --git a/node_modules/@medusajs/dashboard/.DS_Store b/node_modules/@medusajs/dashboard/.DS_Store
+new file mode 100644
+index 0000000..235f6ae
+Binary files /dev/null and b/node_modules/@medusajs/dashboard/.DS_Store differ
+diff --git a/node_modules/@medusajs/dashboard/dist/app.js b/node_modules/@medusajs/dashboard/dist/app.js
+index 630384f..a1cb6bc 100644
+--- a/node_modules/@medusajs/dashboard/dist/app.js
++++ b/node_modules/@medusajs/dashboard/dist/app.js
+@@ -110619,7 +110619,7 @@ var init_file_upload = __esm({
+     import_ui55 = require("@medusajs/ui");
+     import_react71 = require("react");
+     import_jsx_runtime77 = require("react/jsx-runtime");
+-    DEFAULT_MAX_FILE_SIZE = 1024 * 1024;
++    DEFAULT_MAX_FILE_SIZE = 10 * 1024 * 1024;
+     FileUpload = ({
+       label,
+       hint,
+@@ -110800,7 +110800,7 @@ var init_upload_media_form_item = __esm({
+               type: "file_too_large",
+               message: t5("products.media.fileTooLarge", {
+                 name: fileNames,
+-                size: "1MB"
++                size: "10MB"
+               })
+             });
+             hasInvalidFile = true;
+diff --git a/node_modules/@medusajs/dashboard/dist/chunk-BYOPZAGX.mjs b/node_modules/@medusajs/dashboard/dist/chunk-BYOPZAGX.mjs
+index cebcbc2..e436c3a 100644
+--- a/node_modules/@medusajs/dashboard/dist/chunk-BYOPZAGX.mjs
++++ b/node_modules/@medusajs/dashboard/dist/chunk-BYOPZAGX.mjs
+@@ -3,7 +3,7 @@ import { ArrowDownTray } from "@medusajs/icons";
+ import { Text, clx } from "@medusajs/ui";
+ import { useRef, useState } from "react";
+ import { jsx, jsxs } from "react/jsx-runtime";
+-var DEFAULT_MAX_FILE_SIZE = 1024 * 1024;
++var DEFAULT_MAX_FILE_SIZE = 10 * 1024 * 1024;
+ var FileUpload = ({
+   label,
+   hint,
+diff --git a/node_modules/@medusajs/dashboard/dist/chunk-DODQ3KJT.mjs b/node_modules/@medusajs/dashboard/dist/chunk-DODQ3KJT.mjs
+index 068317b..e6c9f0d 100644
+--- a/node_modules/@medusajs/dashboard/dist/chunk-DODQ3KJT.mjs
++++ b/node_modules/@medusajs/dashboard/dist/chunk-DODQ3KJT.mjs
+@@ -288,7 +288,7 @@ var UploadMediaFormItem = ({
+           type: "file_too_large",
+           message: t("products.media.fileTooLarge", {
+             name: fileNames,
+-            size: "1MB"
++            size: "10MB"
+           })
+         });
+         hasInvalidFile = true;
+diff --git a/node_modules/@medusajs/dashboard/src/.DS_Store b/node_modules/@medusajs/dashboard/src/.DS_Store
+new file mode 100644
+index 0000000..3e11dc7
+Binary files /dev/null and b/node_modules/@medusajs/dashboard/src/.DS_Store differ
+diff --git a/node_modules/@medusajs/dashboard/src/components/common/file-upload/file-upload.tsx b/node_modules/@medusajs/dashboard/src/components/common/file-upload/file-upload.tsx
+index 41600ab..9554536 100644
+--- a/node_modules/@medusajs/dashboard/src/components/common/file-upload/file-upload.tsx
++++ b/node_modules/@medusajs/dashboard/src/components/common/file-upload/file-upload.tsx
+@@ -23,7 +23,7 @@ export interface FileUploadProps {
+   onUploaded: (files: FileType[], rejectedFiles?: RejectedFile[]) => void
+ }
+ 
+-const DEFAULT_MAX_FILE_SIZE = 1024 * 1024 // 1MB
++const DEFAULT_MAX_FILE_SIZE = 10 * 1024 * 1024 // 1MB
+ 
+ export const FileUpload = ({
+   label,
+diff --git a/node_modules/@medusajs/dashboard/src/routes/products/common/components/upload-media-form-item/upload-media-form-item.tsx b/node_modules/@medusajs/dashboard/src/routes/products/common/components/upload-media-form-item/upload-media-form-item.tsx
+index 9a052fa..7724631 100644
+--- a/node_modules/@medusajs/dashboard/src/routes/products/common/components/upload-media-form-item/upload-media-form-item.tsx
++++ b/node_modules/@medusajs/dashboard/src/routes/products/common/components/upload-media-form-item/upload-media-form-item.tsx
+@@ -75,7 +75,7 @@ export const UploadMediaFormItem = ({
+           type: "file_too_large",
+           message: t("products.media.fileTooLarge", {
+             name: fileNames,
+-            size: "1MB",
++            size: "10MB",
+           }),
+         })
+ 
