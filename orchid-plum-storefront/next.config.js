@@ -25,10 +25,16 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    loader: "custom",
+    loaderFile: "./src/lib/util/cloudinary-loader.ts",
     remotePatterns: [
       {
         protocol: "http",
         hostname: "localhost",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
       },
       {
         protocol: "https",
