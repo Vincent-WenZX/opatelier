@@ -1,36 +1,86 @@
-import { Github } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
+import { HttpTypes } from "@medusajs/types"
+import { getProductPrice } from "@lib/util/get-product-price"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Image from "next/image"
 
-const Hero = () => {
+type ProductShowcaseProps = {
+  products: HttpTypes.StoreProduct[]
+}
+
+const ProductShowcase = ({ products }: ProductShowcaseProps) => {
+  if (!products?.length) {
+    return null
+  }
+
   return (
-    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
-      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center small:p-32 gap-6">
-        <span>
-          <Heading
-            level="h1"
-            className="text-3xl leading-10 text-ui-fg-base font-normal"
+    <div>
+      {products.map((product) => {
+        const { cheapestPrice } = getProductPrice({ product })
+        const images = product.images || []
+        const thumbnail = product.thumbnail
+        const secondImage = images.length > 1 ? images[1].url : null
+
+        return (
+          <LocalizedClientLink
+            key={product.id}
+            href={`/products/${product.handle}`}
+            className="block"
           >
-            Ecommerce Starter Template
-          </Heading>
-          <Heading
-            level="h2"
-            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
-          >
-            Powered by Medusa and Next.js
-          </Heading>
-        </span>
-        <a
-          href="https://github.com/medusajs/nextjs-starter-medusa"
-          target="_blank"
-        >
-          <Button variant="secondary">
-            View on GitHub
-            <Github />
-          </Button>
-        </a>
-      </div>
+            <section className="relative h-screen w-full">
+              {/* 50/50 Image Grid */}
+              <div className="flex h-[calc(100%-4rem)] small:flex-row flex-col">
+                {/* Left Image */}
+                <div className="relative w-full small:w-1/2 h-1/2 small:h-full bg-neutral-100">
+                  {thumbnail && (
+                    <Image
+                      src={thumbnail}
+                      alt={product.title || ""}
+                      fill
+                      className="object-cover"
+                      sizes="50vw"
+                    />
+                  )}
+                </div>
+
+                {/* Right Image */}
+                <div className="relative w-full small:w-1/2 h-1/2 small:h-full bg-neutral-200">
+                  {(secondImage || thumbnail) && (
+                    <Image
+                      src={secondImage || thumbnail!}
+                      alt={`${product.title} styled` || ""}
+                      fill
+                      className="object-cover"
+                      sizes="50vw"
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* Product Info Bar */}
+              <div className="h-16 flex items-center justify-between px-8 bg-white">
+                <div className="flex items-center gap-3">
+                  <h2 className="font-serif text-sm tracking-wide text-neutral-900">
+                    {product.title}
+                  </h2>
+                  {product.subtitle && (
+                    <>
+                      <span className="text-neutral-300">|</span>
+                      <p className="text-xs text-neutral-500 tracking-wide">
+                        {product.subtitle}
+                      </p>
+                    </>
+                  )}
+                </div>
+                <div className="text-sm tracking-wide text-neutral-900">
+                  {cheapestPrice?.calculated_price || ""}
+                </div>
+              </div>
+            </section>
+          </LocalizedClientLink>
+        )
+      })}
     </div>
   )
 }
 
-export default Hero
+export default ProductShowcase
