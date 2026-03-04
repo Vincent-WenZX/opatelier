@@ -36,7 +36,7 @@ export default async function Home(props: {
         regionId: region.id,
         queryParams: {
           collection_id: collection.id,
-          fields: "*variants.calculated_price,+images",
+          fields: "*variants.calculated_price,+images,+metadata",
           limit: 4,
         },
       })
@@ -49,7 +49,7 @@ export default async function Home(props: {
     const { response } = await listProducts({
       regionId: region.id,
       queryParams: {
-        fields: "*variants.calculated_price,+images",
+        fields: "*variants.calculated_price,+images,+metadata",
         limit: 12,
       },
     })
