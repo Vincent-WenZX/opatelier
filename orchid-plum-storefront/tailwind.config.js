@@ -21,6 +21,14 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
+        brand: {
+          light: "#FDFBF7", // Soft cream background
+          main: "#F5F2EA", // Secondary off-white
+          dark: "#E8E2D2", // Borders or subtle dividers
+          text: "#1A1A1A", // Primary text (deep charcoal)
+          muted: "#6B6A68", // Secondary text
+          accent: "#664930", // Leather brown accent
+        },
         grey: {
           0: "#FFFFFF",
           5: "#F9FAFB",

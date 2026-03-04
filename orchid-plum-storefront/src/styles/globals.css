@@ -114,3 +114,13 @@ html {
     @apply text-[32px] leading-[44px] font-semibold;
   }
 }
+
+@layer base {
+  body {
+    @apply bg-brand-light text-brand-text font-sans antialiased selection:bg-brand-accent selection:text-brand-light;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-normal tracking-tight;
+  }
+}

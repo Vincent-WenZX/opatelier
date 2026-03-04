@@ -15,6 +15,9 @@ import { SITE_NAME } from "@lib/constants"
 const SideMenuItems = {
   Home: "/",
   Store: "/store",
+  Men: "/store/men",
+  "New Arrivals": "/store/new-arrivals",
+  Craftsmanship: "/craftsmanship",
   Account: "/account",
   Cart: "/cart",
 }

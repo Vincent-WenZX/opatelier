@@ -1,8 +1,8 @@
 import { HttpTypes } from "@medusajs/types"
-import { getFocusPosition } from "@lib/util/focus-area"
 import { getProductPrice } from "@lib/util/get-product-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
+import FadeIn from "@modules/common/components/fade-in"
 
 type ProductShowcaseProps = {
   products: HttpTypes.StoreProduct[]
@@ -13,95 +13,121 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
     return null
   }
 
+  // Use the first product as the Hero Product (e.g., the Oxford Shoe)
+  const heroProduct = products[0]
+  const remainingProducts = products.slice(1)
+  const heroPrice = getProductPrice({ product: heroProduct })?.cheapestPrice
+  const heroThumbnail = heroProduct.thumbnail || heroProduct.images?.[0]?.url
+
   return (
-    <div>
-      {products.map((product) => {
-        const { cheapestPrice } = getProductPrice({ product })
-        const images = product.images || []
-        const meta = (product.metadata || {}) as Record<string, unknown>
-        const leftIndex = typeof meta.hero_left_index === "number" ? meta.hero_left_index : null
-        const rightIndex = typeof meta.hero_right_index === "number" ? meta.hero_right_index : null
+    <div className="flex flex-col bg-brand-light">
 
-        const leftImage =
-          (leftIndex !== null && images[leftIndex]?.url) ||
-          product.thumbnail ||
-          images[0]?.url ||
-          null
-        const rightImage =
-          (rightIndex !== null && images[rightIndex]?.url) ||
-          (images.length > 1 ? images[1].url : null)
+      {/* 1. INITIAL HERO VIEWPORT - 50/50 SPLIT (Apple Style) */}
+      <div className="relative w-full min-h-screen flex flex-col md:flex-row overflow-hidden">
 
-        const leftImageId = leftIndex !== null ? images[leftIndex]?.id : images[0]?.id
-        const rightImageId = rightIndex !== null ? images[rightIndex]?.id : (images.length > 1 ? images[1]?.id : undefined)
+        {/* Left: Content & Animation Area (50%) */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:pl-16 lg:pl-24 py-20 md:py-0 z-10 bg-brand-light">
 
-        const leftPosition = getFocusPosition(leftImageId, meta)
-        const rightPosition = getFocusPosition(rightImageId, meta)
+          <div className="max-w-xl">
+            <FadeIn direction="up" delay={0.6}>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif text-brand-text leading-[1.1] mb-6">
+                {heroProduct.title}
+              </h1>
+            </FadeIn>
 
-        return (
-          <LocalizedClientLink
-            key={product.id}
-            href={`/products/${product.handle}`}
-            className="block"
+            <FadeIn direction="up" delay={0.8}>
+              <p className="text-brand-muted text-lg md:text-xl mb-10 leading-relaxed font-light">
+                {heroProduct.subtitle || "The epitome of modern craftsmanship. Step into elegance with our latest arrivals designed for the modern gentleman."}
+              </p>
+
+              <LocalizedClientLink
+                href={`/products/${heroProduct.handle}`}
+                className="group relative inline-flex items-center gap-4 text-brand-text hover:text-brand-accent transition-all duration-300 uppercase tracking-widest text-sm pb-2"
+              >
+                <span>Discover the Craft</span>
+                <span className="font-semibold text-brand-muted group-hover:text-brand-accent transition-colors">
+                  {heroPrice?.calculated_price || ""}
+                </span>
+                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-brand-accent -translate-x-[101%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+              </LocalizedClientLink>
+            </FadeIn>
+          </div>
+
+        </div>
+
+        {/* Right: Massive Hero Image Area (50%) */}
+        <div className="w-full md:w-1/2 h-[60vh] md:h-screen relative flex items-center justify-center p-8 lg:p-16 bg-[#f8f8f8]">
+          <FadeIn
+            direction="left"
+            delay={0.4}
+            className="relative w-full h-full max-h-[85vh] flex items-center justify-center group"
           >
-            <section className="relative h-[calc(100vh-5rem)] w-full">
-              {/* 50/50 Image Grid */}
-              <div className="flex h-[calc(100%-4rem)] small:flex-row flex-col">
-                {/* Left Image */}
-                <div className="relative w-full small:w-1/2 h-1/2 small:h-full bg-neutral-100">
-                  {leftImage && (
-                    <Image
-                      src={leftImage}
-                      alt={product.title || ""}
-                      fill
-                      className="object-cover"
-                      sizes="50vw"
-                      style={{ objectPosition: leftPosition }}
-                    />
-                  )}
-                </div>
+            {heroThumbnail && (
+              <Image
+                src={heroThumbnail}
+                alt={heroProduct.title || "Featured Product"}
+                fill
+                className="object-contain drop-shadow-2xl transition-transform duration-[2000ms] ease-out group-hover:scale-[1.02]"
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            )}
+          </FadeIn>
+        </div>
+      </div>
 
-                {/* Right Image */}
-                <div className="relative w-full small:w-1/2 h-1/2 small:h-full bg-neutral-200">
-                  {(rightImage || leftImage) && (
-                    <Image
-                      src={rightImage || leftImage!}
-                      alt={`${product.title} styled` || ""}
-                      fill
-                      className="object-cover"
-                      sizes="50vw"
-                      style={{
-                        objectPosition: rightImage
-                          ? rightPosition
-                          : leftPosition,
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
+      {/* 2. COLLECTION GRID */}
+      <div className="w-full max-w-7xl mx-auto px-6 lg:px-12 py-24">
+        <FadeIn direction="up">
+          <h2 className="text-3xl font-serif text-brand-text mb-12 text-center">
+            The Essentials
+          </h2>
+        </FadeIn>
 
-              {/* Product Info Bar */}
-              <div className="h-16 flex items-center justify-between px-8 bg-white">
-                <div className="flex items-center gap-3">
-                  <h2 className="font-serif text-sm tracking-wide text-neutral-900">
-                    {product.title}
-                  </h2>
-                  {product.subtitle && (
-                    <>
-                      <span className="text-neutral-300">|</span>
-                      <p className="text-xs text-neutral-500 tracking-wide">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+          {remainingProducts.map((product, index) => {
+            const { cheapestPrice } = getProductPrice({ product })
+            const thumbnail = product.thumbnail || product.images?.[0]?.url
+
+            return (
+              <FadeIn
+                key={product.id}
+                direction="up"
+                delay={index * 0.1}
+                className="group"
+              >
+                <LocalizedClientLink href={`/products/${product.handle}`} className="block">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#f8f8f8] mb-6">
+                    {thumbnail && (
+                      <Image
+                        src={thumbnail}
+                        alt={product.title || "Product image"}
+                        fill
+                        className="object-contain p-4 transition-transform duration-1000 ease-out group-hover:scale-[1.02]"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    )}
+                  </div>
+                  <div className="flex flex-col items-center text-center">
+                    <h3 className="text-lg font-serif text-brand-text hover:text-brand-accent transition-colors">
+                      {product.title}
+                    </h3>
+                    {product.subtitle && (
+                      <p className="text-xs text-brand-muted mt-2 uppercase tracking-[0.15em]">
                         {product.subtitle}
                       </p>
-                    </>
-                  )}
-                </div>
-                <div className="text-sm tracking-wide text-neutral-900">
-                  {cheapestPrice?.calculated_price || ""}
-                </div>
-              </div>
-            </section>
-          </LocalizedClientLink>
-        )
-      })}
+                    )}
+                    <p className="text-sm tracking-wide text-brand-text mt-3 font-medium">
+                      {cheapestPrice?.calculated_price || ""}
+                    </p>
+                  </div>
+                </LocalizedClientLink>
+              </FadeIn>
+            )
+          })}
+        </div>
+      </div>
+
     </div>
   )
 }

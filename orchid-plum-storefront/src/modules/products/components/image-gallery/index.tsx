@@ -17,19 +17,19 @@ const ImageGallery = ({ images, metadata }: ImageGalleryProps) => {
           return (
             <Container
               key={image.id}
-              className="relative aspect-[3/4] w-full overflow-hidden bg-ui-bg-subtle"
+              className="relative aspect-[3/4] w-full overflow-hidden bg-white"
               id={image.id}
             >
               {!!image.url && (
                 <Image
                   src={image.url}
                   priority={index <= 2 ? true : false}
-                  className="absolute inset-0 rounded-rounded"
+                  className="absolute inset-0"
                   alt={`Product image ${index + 1}`}
                   fill
                   sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
                   style={{
-                    objectFit: "cover",
+                    objectFit: "contain",
                     objectPosition,
                   }}
                 />
