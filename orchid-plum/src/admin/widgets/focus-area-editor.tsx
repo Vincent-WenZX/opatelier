@@ -31,13 +31,17 @@ const FocusAreaEditor = () => {
   useEffect(() => {
     if (!productId) return
     fetch(`/admin/products/${productId}`, { credentials: "include" })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`Failed to load product: ${r.status}`)
+        return r.json()
+      })
       .then((data) => {
         const p = data.product as ProductData
         setProduct(p)
         const existing = (p.metadata?.image_focus_areas || {}) as FocusAreas
         setFocusAreas(existing)
       })
+      .catch((err) => console.error("[FocusAreaEditor]", err))
   }, [productId])
 
   const selectedImage = product?.images.find((img) => img.id === selectedImageId)
@@ -105,7 +109,7 @@ const FocusAreaEditor = () => {
     if (!productId) return
     setSaving(true)
     try {
-      await fetch(`/admin/products/${productId}`, {
+      const res = await fetch(`/admin/products/${productId}`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -113,6 +117,9 @@ const FocusAreaEditor = () => {
           metadata: { image_focus_areas: areas },
         }),
       })
+      if (!res.ok) console.error("[FocusAreaEditor] Save failed:", res.status)
+    } catch (err) {
+      console.error("[FocusAreaEditor] Save error:", err)
     } finally {
       setSaving(false)
     }
@@ -213,21 +220,16 @@ const FocusAreaEditor = () => {
               className="block w-full"
               draggable={false}
             />
-            {/* Dim overlay outside selection */}
+            {/* Dim overlay outside selection via box-shadow */}
             {rectStyle && (
-              <>
-                {/* Semi-transparent overlay covers the whole image */}
-                <div className="absolute inset-0 bg-black/40 pointer-events-none" />
-                {/* Clear window for the selected area */}
-                <div
-                  className="absolute border-2 border-blue-500 pointer-events-none"
-                  style={{
-                    ...rectStyle,
-                    boxShadow: "0 0 0 9999px rgba(0,0,0,0.4)",
-                    backgroundColor: "transparent",
-                  }}
-                />
-              </>
+              <div
+                className="absolute border-2 border-blue-500 pointer-events-none"
+                style={{
+                  ...rectStyle,
+                  boxShadow: "0 0 0 9999px rgba(0,0,0,0.4)",
+                  backgroundColor: "transparent",
+                }}
+              />
             )}
           </div>
           <div className="flex gap-2 mt-3">
