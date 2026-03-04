@@ -1,5 +1,7 @@
 import { Suspense } from "react"
 
+import Image from "next/image"
+import { SITE_NAME } from "@lib/constants"
 import { listCollections } from "@lib/data/collections"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
@@ -20,8 +22,15 @@ export default async function Nav() {
               className="flex items-center gap-3 hover:opacity-80 transition-opacity"
               data-testid="nav-store-link"
             >
+              <Image
+                src="/logo_icon.png"
+                alt={SITE_NAME}
+                width={40}
+                height={36}
+                className="h-9 w-auto"
+              />
               <span className="text-xs tracking-[0.3em] font-serif uppercase">
-                Orchid & Plum
+                {SITE_NAME}
               </span>
             </LocalizedClientLink>
           </div>
