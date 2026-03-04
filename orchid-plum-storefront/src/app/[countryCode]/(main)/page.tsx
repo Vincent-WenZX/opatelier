@@ -1,12 +1,13 @@
 import { Metadata } from "next"
 
+import { SITE_NAME } from "@lib/constants"
 import ProductShowcase from "@modules/home/components/hero"
 import { listCollections } from "@lib/data/collections"
 import { listProducts } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Orchid & Plum",
+  title: SITE_NAME,
   description: "Luxury footwear and clothing crafted with distinction.",
 }
 
