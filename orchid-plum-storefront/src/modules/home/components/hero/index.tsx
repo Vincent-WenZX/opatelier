@@ -1,4 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
+import { applyFocusArea } from "@lib/util/focus-area"
 import { getProductPrice } from "@lib/util/get-product-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
@@ -30,6 +31,16 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
           (rightIndex !== null && images[rightIndex]?.url) ||
           (images.length > 1 ? images[1].url : null)
 
+        const leftImageId = leftIndex !== null ? images[leftIndex]?.id : images[0]?.id
+        const rightImageId = rightIndex !== null ? images[rightIndex]?.id : (images.length > 1 ? images[1]?.id : undefined)
+
+        const leftSrc = leftImage
+          ? applyFocusArea(leftImage, leftImageId, meta)
+          : null
+        const rightSrc = rightImage
+          ? applyFocusArea(rightImage, rightImageId, meta)
+          : null
+
         return (
           <LocalizedClientLink
             key={product.id}
@@ -41,9 +52,9 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
               <div className="flex h-[calc(100%-4rem)] small:flex-row flex-col">
                 {/* Left Image */}
                 <div className="relative w-full small:w-1/2 h-1/2 small:h-full bg-neutral-100">
-                  {leftImage && (
+                  {leftSrc && (
                     <Image
-                      src={leftImage}
+                      src={leftSrc}
                       alt={product.title || ""}
                       fill
                       className="object-cover"
@@ -54,9 +65,9 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
 
                 {/* Right Image */}
                 <div className="relative w-full small:w-1/2 h-1/2 small:h-full bg-neutral-200">
-                  {(rightImage || leftImage) && (
+                  {(rightSrc || leftSrc) && (
                     <Image
-                      src={rightImage || leftImage!}
+                      src={rightSrc || leftSrc!}
                       alt={`${product.title} styled` || ""}
                       fill
                       className="object-cover"
