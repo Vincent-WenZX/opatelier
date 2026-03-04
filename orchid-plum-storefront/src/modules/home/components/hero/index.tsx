@@ -17,8 +17,18 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
       {products.map((product) => {
         const { cheapestPrice } = getProductPrice({ product })
         const images = product.images || []
-        const thumbnail = product.thumbnail || images[0]?.url || null
-        const secondImage = images.length > 1 ? images[1].url : null
+        const meta = (product.metadata || {}) as Record<string, unknown>
+        const leftIndex = typeof meta.hero_left_index === "number" ? meta.hero_left_index : null
+        const rightIndex = typeof meta.hero_right_index === "number" ? meta.hero_right_index : null
+
+        const leftImage =
+          (leftIndex !== null && images[leftIndex]?.url) ||
+          product.thumbnail ||
+          images[0]?.url ||
+          null
+        const rightImage =
+          (rightIndex !== null && images[rightIndex]?.url) ||
+          (images.length > 1 ? images[1].url : null)
 
         return (
           <LocalizedClientLink
@@ -31,9 +41,9 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
               <div className="flex h-[calc(100%-4rem)] small:flex-row flex-col">
                 {/* Left Image */}
                 <div className="relative w-full small:w-1/2 h-1/2 small:h-full bg-neutral-100">
-                  {thumbnail && (
+                  {leftImage && (
                     <Image
-                      src={thumbnail}
+                      src={leftImage}
                       alt={product.title || ""}
                       fill
                       className="object-cover"
@@ -44,9 +54,9 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
 
                 {/* Right Image */}
                 <div className="relative w-full small:w-1/2 h-1/2 small:h-full bg-neutral-200">
-                  {(secondImage || thumbnail) && (
+                  {(rightImage || leftImage) && (
                     <Image
-                      src={secondImage || thumbnail!}
+                      src={rightImage || leftImage!}
                       alt={`${product.title} styled` || ""}
                       fill
                       className="object-cover"
