@@ -1,6 +1,8 @@
 import React from "react"
 import { CreditCard } from "@medusajs/icons"
 
+export const SITE_NAME = "ORCHID & PLUM"
+
 import Ideal from "@modules/common/icons/ideal"
 import Bancontact from "@modules/common/icons/bancontact"
 import PayPal from "@modules/common/icons/paypal"
