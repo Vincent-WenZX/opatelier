@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { applyFocusArea } from "@lib/util/focus-area"
+import { getFocusPosition } from "@lib/util/focus-area"
 import { getProductPrice } from "@lib/util/get-product-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
@@ -34,12 +34,8 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
         const leftImageId = leftIndex !== null ? images[leftIndex]?.id : images[0]?.id
         const rightImageId = rightIndex !== null ? images[rightIndex]?.id : (images.length > 1 ? images[1]?.id : undefined)
 
-        const leftSrc = leftImage
-          ? applyFocusArea(leftImage, leftImageId, meta)
-          : null
-        const rightSrc = rightImage
-          ? applyFocusArea(rightImage, rightImageId, meta)
-          : null
+        const leftPosition = getFocusPosition(leftImageId, meta)
+        const rightPosition = getFocusPosition(rightImageId, meta)
 
         return (
           <LocalizedClientLink
@@ -52,26 +48,32 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
               <div className="flex h-[calc(100%-4rem)] small:flex-row flex-col">
                 {/* Left Image */}
                 <div className="relative w-full small:w-1/2 h-1/2 small:h-full bg-neutral-100">
-                  {leftSrc && (
+                  {leftImage && (
                     <Image
-                      src={leftSrc}
+                      src={leftImage}
                       alt={product.title || ""}
                       fill
                       className="object-cover"
                       sizes="50vw"
+                      style={{ objectPosition: leftPosition }}
                     />
                   )}
                 </div>
 
                 {/* Right Image */}
                 <div className="relative w-full small:w-1/2 h-1/2 small:h-full bg-neutral-200">
-                  {(rightSrc || leftSrc) && (
+                  {(rightImage || leftImage) && (
                     <Image
-                      src={rightSrc || leftSrc!}
+                      src={rightImage || leftImage!}
                       alt={`${product.title} styled` || ""}
                       fill
                       className="object-cover"
                       sizes="50vw"
+                      style={{
+                        objectPosition: rightImage
+                          ? rightPosition
+                          : leftPosition,
+                      }}
                     />
                   )}
                 </div>

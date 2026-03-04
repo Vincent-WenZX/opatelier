@@ -3,7 +3,7 @@ import Image from "next/image"
 import React from "react"
 
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
-import { applyFocusAreaByUrl } from "@lib/util/focus-area"
+import { getFocusPositionByUrl } from "@lib/util/focus-area"
 
 type ThumbnailProps = {
   thumbnail?: string | null
@@ -26,9 +26,9 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   "data-testid": dataTestid,
 }) => {
   const initialImage = thumbnail || images?.[0]?.url
-  const imageSrc = initialImage
-    ? applyFocusAreaByUrl(initialImage, images, metadata)
-    : undefined
+  const objectPosition = initialImage
+    ? getFocusPositionByUrl(initialImage, images, metadata)
+    : "center"
 
   return (
     <Container
@@ -47,7 +47,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       )}
       data-testid={dataTestid}
     >
-      <ImageOrPlaceholder image={imageSrc} size={size} />
+      <ImageOrPlaceholder
+        image={initialImage}
+        size={size}
+        objectPosition={objectPosition}
+      />
     </Container>
   )
 }
@@ -55,16 +59,21 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
 const ImageOrPlaceholder = ({
   image,
   size,
-}: Pick<ThumbnailProps, "size"> & { image?: string }) => {
+  objectPosition,
+}: Pick<ThumbnailProps, "size"> & {
+  image?: string
+  objectPosition: string
+}) => {
   return image ? (
     <Image
       src={image}
       alt="Thumbnail"
-      className="absolute inset-0 object-cover object-center"
+      className="absolute inset-0 object-cover"
       draggable={false}
       quality={50}
       sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
       fill
+      style={{ objectPosition }}
     />
   ) : (
     <div className="w-full h-full absolute inset-0 flex items-center justify-center">

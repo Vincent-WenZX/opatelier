@@ -10,51 +10,51 @@ type FocusArea = {
 type ImageFocusAreas = Record<string, FocusArea>
 
 /**
- * Given a product's metadata and an image ID + URL,
- * returns the URL with focus params appended (if a focus area exists).
+ * Given a product's metadata and an image ID,
+ * returns an object-position CSS value that centers the focus area.
+ * Falls back to "center" if no focus area exists.
  */
-export function applyFocusArea(
-  imageUrl: string,
+export function getFocusPosition(
   imageId: string | undefined,
   metadata: Record<string, unknown> | null | undefined
 ): string {
-  if (!imageId || !metadata) return imageUrl
+  if (!imageId || !metadata) return "center"
 
   const areas = metadata.image_focus_areas as ImageFocusAreas | undefined
-  if (!areas) return imageUrl
+  if (!areas) return "center"
 
   const area = areas[imageId]
-  if (!area) return imageUrl
+  if (!area) return "center"
 
-  const { x, y, w, h, naturalWidth, naturalHeight } = area
+  const { x, y, w, h } = area
   if (
     typeof x !== "number" ||
     typeof y !== "number" ||
     typeof w !== "number" ||
-    typeof h !== "number" ||
-    typeof naturalWidth !== "number" ||
-    typeof naturalHeight !== "number"
+    typeof h !== "number"
   ) {
-    return imageUrl
+    return "center"
   }
 
-  const sep = imageUrl.includes("?") ? "&" : "?"
-  return `${imageUrl}${sep}focus=${x},${y},${w},${h},${naturalWidth},${naturalHeight}`
+  const centerX = x + w / 2
+  const centerY = y + h / 2
+  return `${centerX.toFixed(1)}% ${centerY.toFixed(1)}%`
 }
 
 /**
  * For thumbnail URLs (no image ID available),
- * find the focus area by matching the URL against image entries.
+ * find the focus area by matching the URL against image entries,
+ * then return the object-position CSS value.
  */
-export function applyFocusAreaByUrl(
+export function getFocusPositionByUrl(
   imageUrl: string,
   images: Array<{ id: string; url: string }> | null | undefined,
   metadata: Record<string, unknown> | null | undefined
 ): string {
-  if (!images || !metadata) return imageUrl
+  if (!images || !metadata) return "center"
 
   const match = images.find((img) => img.url === imageUrl)
-  if (!match) return imageUrl
+  if (!match) return "center"
 
-  return applyFocusArea(imageUrl, match.id, metadata)
+  return getFocusPosition(match.id, metadata)
 }
