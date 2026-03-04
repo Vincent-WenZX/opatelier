@@ -41,6 +41,11 @@ export function parseFocusParams(src: string): {
   const w = Math.round((pw / 100) * natW)
   const h = Math.round((ph / 100) * natH)
 
+  // Guard against corrupted metadata (out-of-range values or zero dimensions)
+  if (w <= 0 || h <= 0) {
+    return { cleanSrc: restored, crop: null }
+  }
+
   return { cleanSrc: restored, crop: { x, y, w, h } }
 }
 
