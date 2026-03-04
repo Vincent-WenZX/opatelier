@@ -29,6 +29,9 @@ COPY --from=builder /app/tsconfig.json ./
 COPY --from=builder /app/src ./src
 
 ENV PATH="/app/node_modules/.bin:$PATH"
+ENV NODE_ENV=production
+ENV DISABLE_ADMIN=true
+
 EXPOSE 9000
 
-CMD ["sh", "-c", "medusa db:migrate && medusa start"]
+CMD ["sh", "-c", "medusa db:migrate && echo '=== Starting Medusa server ===' && medusa start 2>&1"]
