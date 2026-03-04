@@ -24,6 +24,9 @@ WORKDIR /app
 COPY --from=builder /app/.medusa ./.medusa
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
+COPY --from=builder /app/medusa-config.ts ./
+COPY --from=builder /app/tsconfig.json ./
+COPY --from=builder /app/src ./src
 
 ENV PATH="/app/node_modules/.bin:$PATH"
 EXPOSE 9000
