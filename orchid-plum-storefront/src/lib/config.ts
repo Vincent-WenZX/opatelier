@@ -34,6 +34,7 @@ sdk.client.fetch = async <T>(
   init = {
     ...init,
     headers: newHeaders,
+    cache: "no-store",
   }
   return originalFetch(input, init)
 }

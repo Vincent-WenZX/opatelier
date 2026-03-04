@@ -169,6 +169,9 @@ const FocusAreaEditor = () => {
           Click an image, then drag to mark the product area. This ensures the
           product displays fully on all screen sizes.
         </p>
+        <p className="text-ui-fg-muted text-xs mt-1">
+          建议上传尺寸：1600×1200 或 1200×1600（4:3 / 3:4 比例）
+        </p>
       </div>
 
       {/* Thumbnail grid */}

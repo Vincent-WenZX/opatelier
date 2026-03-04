@@ -25,7 +25,7 @@ const HeroImagePicker = () => {
 
   useEffect(() => {
     if (!productId) return
-    fetch(`/admin/products/${productId}?fields=images,metadata,thumbnail`, {
+    fetch(`/admin/products/${productId}`, {
       credentials: "include",
     })
       .then((r) => r.json())
@@ -103,6 +103,9 @@ const HeroImagePicker = () => {
       <div className="px-6 pb-2">
         <p className="text-ui-fg-subtle text-xs">
           Click to select Left (L) and Right (R) images for the homepage hero.
+        </p>
+        <p className="text-ui-fg-muted text-xs mt-1">
+          建议上传尺寸：1600×1200 或 1200×1600（4:3 / 3:4 比例）
         </p>
       </div>
       <div className="grid grid-cols-3 gap-2 px-6 pb-6">
