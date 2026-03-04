@@ -25,6 +25,7 @@ COPY --from=builder /app/.medusa ./.medusa
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
 
+ENV PATH="/app/node_modules/.bin:$PATH"
 EXPOSE 9000
 
-CMD ["sh", "-c", "npx medusa db:migrate && npx medusa start"]
+CMD ["sh", "-c", "medusa db:migrate && medusa start"]
