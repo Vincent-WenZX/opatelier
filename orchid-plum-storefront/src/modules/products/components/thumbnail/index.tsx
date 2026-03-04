@@ -3,6 +3,7 @@ import Image from "next/image"
 import React from "react"
 
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
+import { applyFocusAreaByUrl } from "@lib/util/focus-area"
 
 type ThumbnailProps = {
   thumbnail?: string | null
@@ -10,6 +11,7 @@ type ThumbnailProps = {
   images?: any[] | null
   size?: "small" | "medium" | "large" | "full" | "square"
   isFeatured?: boolean
+  metadata?: Record<string, unknown> | null
   className?: string
   "data-testid"?: string
 }
@@ -19,10 +21,14 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   images,
   size = "small",
   isFeatured,
+  metadata,
   className,
   "data-testid": dataTestid,
 }) => {
   const initialImage = thumbnail || images?.[0]?.url
+  const imageSrc = initialImage
+    ? applyFocusAreaByUrl(initialImage, images, metadata)
+    : undefined
 
   return (
     <Container
@@ -41,7 +47,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       )}
       data-testid={dataTestid}
     >
-      <ImageOrPlaceholder image={initialImage} size={size} />
+      <ImageOrPlaceholder image={imageSrc} size={size} />
     </Container>
   )
 }
