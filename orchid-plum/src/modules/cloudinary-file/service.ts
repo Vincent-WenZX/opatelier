@@ -1,7 +1,7 @@
 import { AbstractFileProviderService } from "@medusajs/framework/utils"
 import { FileTypes, Logger } from "@medusajs/framework/types"
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary"
-import { Readable } from "stream"
+import { Readable, Writable } from "stream"
 
 type CloudinaryOptions = {
   cloud_name: string
@@ -111,7 +111,7 @@ class CloudinaryFileProviderService extends AbstractFileProviderService {
   async getUploadStream(
     fileData: FileTypes.ProviderUploadStreamDTO
   ): Promise<{
-    writeStream: NodeJS.WritableStream
+    writeStream: Writable
     promise: Promise<FileTypes.ProviderFileResultDTO>
     url: string
     fileKey: string
@@ -141,7 +141,7 @@ class CloudinaryFileProviderService extends AbstractFileProviderService {
           key: result.public_id,
         })
       }
-    )
+    ) as unknown as Writable
 
     const tempKey = `${this.options_.folder || "orchid-plum"}/${fileData.filename}`
     const tempUrl = cloudinary.url(tempKey, { secure: true })
