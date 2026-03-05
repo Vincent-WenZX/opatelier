@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #B8986E;
+  --color-gold-light: #D4BC94;
+  --color-plum: #3D1C3A;
+  --color-plum-light: #5C3058;
+  --color-off-white: #F5F3F0;
+  --color-surface: #FAFAFA;
+  --color-ink: #1A1A1A;
+  --color-muted: #888888;
+  --color-border: rgba(0, 0, 0, 0.06);
+
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Karla', sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

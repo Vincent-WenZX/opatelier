@@ -1,0 +1,375 @@
+/* Craftsmanship page — ported 1:1 from plum-story-v2.html */
+
+.craft-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.craft-content {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.craft-content * { pointer-events: auto; }
+
+/* Hero — editorial layered layout */
+.craft-hero {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Logo — flush left wall, upper area, growing from the edge */
+.craft-hero-logo {
+  position: absolute;
+  top: clamp(24px, 5vh, 60px);
+  left: 0;
+  transform: translateX(-12%);
+  opacity: 0;
+  animation: craftLogoGrow 2.4s ease 0.2s forwards;
+}
+
+.craft-hero-logo img {
+  height: clamp(180px, 34vh, 380px);
+  width: auto;
+  filter: drop-shadow(4px 0 24px rgba(60,40,45,0.08));
+}
+
+@keyframes craftLogoGrow {
+  0% { opacity: 0; transform: translateX(-25%); }
+  100% { opacity: 1; transform: translateX(-12%); }
+}
+
+/* "Our Story" label — floats above the title, offset left */
+.craft-hero-label-float {
+  position: absolute;
+  top: 36%;
+  left: clamp(36px, 32vw, 520px);
+  transform: translateY(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(14px, 1.6vw, 22px);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #a08a8e;
+  opacity: 0;
+  animation: craftFadeIn 1.6s ease 0.8s forwards;
+}
+
+/* Center title block — Chinese + English */
+.craft-hero-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-42%, -45%);
+  opacity: 0;
+  animation: craftHeroReveal 2.2s ease 0.6s forwards;
+}
+
+.craft-hero-title {
+  font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+  font-weight: 400;
+  font-size: clamp(24px, 3vw, 42px);
+  line-height: 1.5;
+  letter-spacing: 0.15em;
+  color: #5a4548;
+  margin-bottom: 24px;
+  white-space: nowrap;
+}
+
+.craft-hero-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px, 3.8vw, 54px);
+  line-height: 1.4;
+  color: #3a2a2e;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+/* Description — lower right, offset */
+.craft-hero-aside {
+  position: absolute;
+  bottom: clamp(48px, 10vh, 120px);
+  right: clamp(36px, 8vw, 160px);
+  max-width: 380px;
+  text-align: right;
+  opacity: 0;
+  animation: craftFadeUp 1.8s ease 1.4s forwards;
+  transform: translateY(20px);
+}
+
+.craft-hero-aside .craft-divider {
+  margin-left: auto;
+  margin-bottom: 18px;
+}
+
+.craft-hero-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(14px, 1.3vw, 17px);
+  line-height: 1.9;
+  color: #7a6568;
+  font-weight: 300;
+}
+
+@keyframes craftHeroReveal {
+  0% { opacity: 0; transform: translate(-42%, -40%); }
+  100% { opacity: 1; transform: translate(-42%, -45%); }
+}
+
+/* Sections */
+.craft-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px clamp(40px, 5vw, 80px);
+}
+
+.craft-section-right { justify-content: flex-end; }
+.craft-section-left { justify-content: flex-start; }
+
+.craft-section-inner {
+  max-width: 520px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+.craft-section-inner.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.craft-section-inner.align-right {
+  margin-right: clamp(40px, 6vw, 140px);
+}
+
+.craft-section-inner.align-left {
+  margin-left: clamp(40px, 6vw, 140px);
+}
+
+/* Photo placeholder */
+.craft-photo {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: linear-gradient(145deg, #ece7e3, #e2dbd6);
+  border: 1px solid rgba(160,130,125,0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.craft-photo::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(160,130,125,0.08);
+}
+
+.craft-photo svg {
+  width: 32px;
+  height: 32px;
+  stroke: #b8a5a0;
+  stroke-width: 1;
+  fill: none;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+
+.craft-photo span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #b8a5a0;
+}
+
+.craft-photo-wide { aspect-ratio: 16 / 9; }
+
+.craft-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(9px, 0.85vw, 10px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #a08a8e;
+  margin-bottom: 16px;
+}
+
+.craft-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(26px, 3.2vw, 44px);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: #3a2a2e;
+  margin-bottom: 20px;
+}
+
+.craft-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(13px, 1.15vw, 15px);
+  line-height: 1.9;
+  color: #7a6568;
+  font-weight: 300;
+}
+
+.craft-text p + p { margin-top: 16px; }
+
+.craft-divider {
+  width: 40px;
+  height: 1px;
+  background: rgba(160,130,125,0.3);
+  margin: 24px 0;
+}
+
+/* Quote */
+.craft-quote {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  padding: 80px clamp(40px, 8vw, 160px);
+}
+
+.craft-quote-right { justify-content: flex-end; }
+.craft-quote-center { justify-content: center; }
+
+.craft-quote-inner {
+  max-width: 500px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+.craft-quote-inner.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.craft-quote-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  line-height: 1;
+  color: rgba(180,140,140,0.25);
+  font-style: italic;
+}
+
+.craft-quote-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(20px, 2.5vw, 32px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.5;
+  color: #5a4548;
+  margin: -10px 0 20px;
+}
+
+.craft-quote-author {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(10px, 0.9vw, 12px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a08a8e;
+}
+
+/* Transition divider */
+.craft-transition {
+  height: 30vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.craft-transition-line {
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, rgba(140,120,115,0.2), transparent);
+}
+
+/* Scroll hint */
+.craft-scroll-hint {
+  position: fixed;
+  bottom: 32px;
+  right: clamp(40px, 5vw, 80px);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  animation: craftFadeIn 1.5s ease 2s forwards;
+  transition: opacity 0.5s ease;
+}
+
+.craft-scroll-hint span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #b0999c;
+}
+
+.craft-scroll-line {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, #b0999c, transparent);
+  animation: craftScrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes craftFadeIn { to { opacity: 1; } }
+@keyframes craftFadeUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes craftScrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
+  50% { opacity: 0.8; transform: scaleY(1); }
+}
+
+@media (max-width: 768px) {
+  .craft-hero-logo {
+    top: 16px; left: 0;
+    transform: translateX(-18%);
+  }
+  .craft-hero-logo img { height: clamp(110px, 22vh, 180px); }
+  @keyframes craftLogoGrow {
+    0% { opacity: 0; transform: translateX(-30%); }
+    100% { opacity: 1; transform: translateX(-18%); }
+  }
+  .craft-hero-label-float {
+    top: auto; bottom: auto; left: 50%;
+    top: 34%;
+    transform: translateX(-50%);
+  }
+  .craft-hero-center {
+    top: 50%; left: 50%;
+    transform: translate(-50%, -45%);
+    text-align: center;
+    width: 90vw;
+  }
+  .craft-hero-title {
+    font-size: clamp(20px, 5.5vw, 30px);
+    white-space: normal;
+    letter-spacing: 0.08em;
+  }
+  .craft-hero-subtitle {
+    font-size: clamp(20px, 5.5vw, 32px);
+  }
+  .craft-hero-aside {
+    bottom: 32px; right: auto; left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    max-width: 85vw;
+  }
+  .craft-hero-aside .craft-divider { margin: 18px auto; }
+  @keyframes craftHeroReveal {
+    0% { opacity: 0; transform: translate(-50%, -40%); }
+    100% { opacity: 1; transform: translate(-50%, -45%); }
+  }
+  .craft-section { padding: 80px 32px; justify-content: center !important; }
+  .craft-section-inner { margin-right: 0 !important; margin-left: 0 !important; }
+  .craft-quote { justify-content: center !important; padding: 60px 32px; }
+}
